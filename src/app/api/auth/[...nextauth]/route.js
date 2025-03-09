@@ -1,8 +1,12 @@
-import { connectMongoDB } from "../../../../../lib/mongodb";
-import User from "../../../../../models/user";
-import NextAuth, { AuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { createClient } from "@supabase/supabase-js";
 import bcrypt from "bcryptjs";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY // Harus pakai SERVICE ROLE untuk query user
+);
 
 export const authOptions = {
   providers: [
@@ -13,26 +17,33 @@ export const authOptions = {
         const { email, password } = credentials;
 
         try {
-          await connectMongoDB();
-          const user = await User.findOne({ email });
+          // Cari user berdasarkan email di Supabase
+          const { data: user, error } = await supabase
+            .from("users") // Ganti sesuai nama tabel
+            .select("id, email, username, password") // Ambil hanya yang diperlukan
+            .eq("email", email)
+            .single();
 
-          if (!user) {
+          if (error || !user) {
+            console.log("User not found or error:", error);
             return null;
           }
 
+          // Bandingkan password yang dimasukkan dengan password di database
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (!passwordsMatch) {
+            console.log("Password mismatch");
             return null;
           }
 
           return {
-            id: user._id,
+            id: user.id,
             email: user.email,
             username: user.username,
           };
         } catch (error) {
-          console.log("Error: ", error);
+          console.log("Error during authentication:", error);
           return null;
         }
       },
