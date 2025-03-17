@@ -19,7 +19,7 @@ export const authOptions = {
         try {
           // Cari user berdasarkan email di Supabase
           const { data: user, error } = await supabase
-            .from("users") // Ganti sesuai nama tabel
+            .from("User") // Ganti sesuai nama tabel
             .select("id, email, username, password") // Ambil hanya yang diperlukan
             .eq("email", email)
             .single();
