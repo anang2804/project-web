@@ -1,23 +1,83 @@
 import React from "react";
 
-export default function Card() {
+export default function Cards() {
   return (
-    <div className="card bg-base-100 w-96 shadow-sm">
-      <figure className="px-10 pt-10">
-        <img
-          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          alt="Shoes"
-          className="rounded-xl"
-        />
-      </figure>
-      <div className="card-body items-center text-center">
-        <h2 className="card-title">Card Title</h2>
-        <p>
-          A card component has a figure, a body part, and inside body there are
-          title and actions parts
-        </p>
-        <div className="card-actions">
-          <button className="btn btn-primary">Buy Now</button>
+    /* Card 1 */
+    <div className="flex space-x-4">
+      <div className="card group hover:shadow sm:max-w-sm">
+        <figure>
+          <img
+            src="https://cdn.flyonui.com/fy-assets/components/card/image-8.png"
+            alt="Shoes"
+            className="transition-transform duration-500 group-hover:scale-110"
+          />
+        </figure>
+        <div className="card-body">
+          <h5 className="card-title mb-2.5">Card title</h5>
+          <p className="mb-6">
+            Nike Air Max is a popular line of athletic shoes that feature Nike's
+            signature Air cushioning technology in the sole.
+          </p>
+          <progress
+            className="progress progress-secondary w-56"
+            value={0}
+            max="100"
+          ></progress>
+          <div className="card-actions">
+            <button className="btn btn-dash btn-accent">Belajar Yuk</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Card 2 */}
+      <div className="card group hover:shadow sm:max-w-sm">
+        <figure>
+          <img
+            src="https://cdn.flyonui.com/fy-assets/components/card/image-8.png"
+            alt="Shoes"
+            className="transition-transform duration-500 group-hover:scale-110"
+          />
+        </figure>
+        <div className="card-body">
+          <h5 className="card-title mb-2.5">Card title</h5>
+          <p className="mb-6">
+            Nike Air Max is a popular line of athletic shoes that feature Nike's
+            signature Air cushioning technology in the sole.
+          </p>
+          <progress
+            className="progress progress-secondary w-56"
+            value={40}
+            max="100"
+          ></progress>
+          <div className="card-actions">
+            <button className="btn btn-dash btn-accent">Belajar Yuk</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Card 3 */}
+      <div className="card group hover:shadow sm:max-w-sm">
+        <figure>
+          <img
+            src="https://cdn.flyonui.com/fy-assets/components/card/image-8.png"
+            alt="Shoes"
+            className="transition-transform duration-500 group-hover:scale-110"
+          />
+        </figure>
+        <div className="card-body">
+          <h5 className="card-title mb-2.5">Card title</h5>
+          <p className="mb-6">
+            Nike Air Max is a popular line of athletic shoes that feature Nike's
+            signature Air cushioning technology in the sole.
+          </p>
+          <progress
+            className="progress progress-secondary w-56"
+            value={70}
+            max="100"
+          ></progress>
+          <div className="card-actions">
+            <button className="btn btn-dash btn-accent">Belajar Yuk</button>
+          </div>
         </div>
       </div>
     </div>

@@ -2,6 +2,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -10,18 +12,20 @@ export default function RegisterPage() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     if (!username || !email || !password || !phone) {
       setError("All fields are required.");
+      setLoading(false);
       return;
     }
 
     try {
-      // Cek apakah user sudah ada
       const resUserExists = await fetch("/api/userExists", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -32,10 +36,10 @@ export default function RegisterPage() {
 
       if (user) {
         setError("User already exists.");
+        setLoading(false);
         return;
       }
 
-      // Registrasi user
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -45,19 +49,27 @@ export default function RegisterPage() {
       if (res.ok) {
         router.push("/login");
       } else {
-        setError("Registration failed.");
+        const { message } = await res.json();
+        setError(message || "Registration failed.");
       }
     } catch (error) {
-      setError("An error occurred during registration.");
+      setError("An unexpected error occurred. Please try again.");
       console.error("Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div
-      className="flex items-center justify-center min-h-screen"
-      style={{ backgroundColor: "#ECF2FA" }}
-    >
+    <div className="flex items-center justify-center min-h-screen bg-[#f0f4f8] relative">
+      {/* Close Button */}
+      <button
+        className="absolute top-5 right-5 bg-red-500 text-white rounded-full p-1 hover:bg-red-700"
+        onClick={() => router.push("/")}
+      >
+        <XMarkIcon className="w-6 h-6" />
+      </button>
+
       {/* Logo */}
       <div className="absolute top-10 left-10">
         <Image
@@ -68,116 +80,82 @@ export default function RegisterPage() {
         />
       </div>
 
-      {/* Content Section */}
-      <div className="w-[465px] mr-28">
-        <div className="w-[465px] h-[292.36px] rounded-tl-lg overflow-hidden">
-          <Image
-            src="/gambarlogin.svg"
-            alt="Admin Tools Screenshot"
-            width={465}
-            height={292.36}
-            className="rounded-tl-lg"
-          />
-        </div>
-        <div className="mt-[45px] text-left">
-          <h1 className="text-2xl font-bold text-gray-800">
-            Elevate Your Messaging Efficiency with Our Innovative Admin Tools
-          </h1>
-          <p className="mt-[30px] text-gray-600">
-            Selamat datang di Forwardin! Pengelolaan pesan Anda menjadi lebih
-            mudah dengan Admin Tools kami. Tingkatkan komunikasi Anda dan
-            pelanggan dengan fitur pesan otomatis. Menyimpan kontak menjadi
-            lebih praktis dengan fitur sinkronisasi Google Contact. Dapatkan
-            kendali penuh pesan dengan manajemen konten yang praktis.
-          </p>
-        </div>
-      </div>
-
-      {/* Login Form Section */}
-      <div className="w-[466px] flex flex-col justify-center p-[40px] bg-white rounded-lg shadow-md">
-        <div className="text-center mb-[40px]">
-          <h2 className="text-2xl font-bold text-black">
-            Welcome to Forwardin
+      {/* Register Form Section */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-[350px] bg-white shadow-lg rounded-lg p-8"
+      >
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Create Account
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Revolutionize your communication
+          <p className="text-sm text-gray-600">
+            Please fill the form below to register
           </p>
-          <p className="text-sm text-gray-600">journey with Forwardin today</p>
         </div>
 
-        <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
-          <div className="relative">
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              type="text"
-              id="email"
-              placeholder="Email"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 placeholder-opacity-50 text-black"
-            />
-          </div>
-
-          <div className="relative">
-            <input
-              onChange={(e) => setUsername(e.target.value)}
-              type="text"
-              id="username"
-              placeholder="Username"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 placeholder-opacity-50 text-black"
-            />
-          </div>
-
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            id="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+          />
+          <input
+            type="text"
+            id="username"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+          />
           <div className="relative flex gap-2">
-            <select className="w-32 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-transparent text-black">
+            <select className="w-32 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-transparent text-black">
               <option value="+62">(ID) +62</option>
-              {/* Add other country codes as needed */}
             </select>
             <input
-              onChange={(e) => setPhone(e.target.value)}
               type="text"
               id="phone"
-              placeholder="WhatsApp Phone Number"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 placeholder-opacity-50 text-black"
+              placeholder="Phone Number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
             />
           </div>
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+          />
 
-          <div className="relative">
-            <input
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-              id="password"
-              placeholder="Password"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 placeholder-opacity-50 text-black"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <a href="#" className="text-sm text-blue-500">
-              Lupa Password?
-            </a>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Register
-          </button>
-
-          {/* Error Massage */}
           {error && (
-            <p className="bg-red-500 rounded-lg flex justify-center items-center p-2">
+            <p className="text-center text-red-500 bg-red-100 p-2 rounded-md mt-2">
               {error}
             </p>
           )}
 
+          <button
+            type="submit"
+            className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading}
+          >
+            {loading ? "Registering..." : "Register"}
+          </button>
+
           <div className="text-center mt-4">
-            <a className="text-sm text-black pr-2">Sudah punya akun?</a>
             <a href="/login" className="text-sm text-blue-500">
-              Masuk di sini
+              Already have an account? Login here
             </a>
           </div>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 }

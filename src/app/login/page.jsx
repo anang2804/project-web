@@ -4,23 +4,22 @@ import Link from "next/link";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function Home() {
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // State untuk loading
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const { data: session } = useSession();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setLoading(true); // Set loading ke true saat login dimulai
+    setLoading(true);
 
     try {
       const res = await signIn("credentials", {
@@ -31,7 +30,7 @@ export default function Home() {
 
       if (res.error) {
         setError("Invalid Credentials");
-        setLoading(false); // Set loading ke false jika terjadi error
+        setLoading(false);
         return;
       }
 
@@ -39,105 +38,103 @@ export default function Home() {
       console.log(session);
     } catch (error) {
       console.log(error);
-      setLoading(false); // Set loading ke false jika terjadi exception
+      setLoading(false);
     }
   };
 
   return (
-    <div
-      className="flex items-center justify-center min-h-screen"
-      style={{ backgroundColor: "#ECF2FA" }}
-    >
-      {/* Logo */}
-      <Link className="absolute top-10 left-10" href={"/"}>
-        <Image
-          src="/logo.svg"
-          alt="Forwardin Logo"
-          width={177}
-          height={33.63}
-        />
-      </Link>
+    <div className="flex min-h-screen">
+      {/* Bagian Kiri */}
+      <motion.div
+        className="flex-1 flex flex-col justify-center items-center bg-blue-600 p-10 text-white"
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h1 className="text-4xl font-bold">Selamat Datang Kembali!</h1>
+        <p className="text-2xl font-semibold mt-2 text-black">
+          Perjalanan belajarmu siap dimulai! 🚀
+        </p>
+      </motion.div>
 
-      {/* Content Section */}
-      <div className="w-[465px] mr-28">
-        <div className="w-[465px] h-[292.36px] rounded-tl-lg overflow-hidden">
-          <Image
-            src="/gambarlogin.svg"
-            alt="Admin Tools Screenshot"
-            width={465}
-            height={292.36}
-            className="rounded-tl-lg"
-          />
-        </div>
-        <div className="mt-[45px] text-left">
-          <h1 className="text-2xl font-bold text-gray-800">
-            Elevate Your Messaging Efficiency with Our Innovative Admin Tools
-          </h1>
-          <p className="mt-[30px] text-gray-600">
-            Selamat datang di Forwardin! Pengelolaan pesan Anda menjadi lebih
-            mudah dengan Admin Tools kami. Tingkatkan komunikasi Anda dan
-            pelanggan dengan fitur pesan otomatis. Menyimpan kontak menjadi
-            lebih praktis dengan fitur sinkronisasi Google Contact. Dapatkan
-            kendali penuh pesan dengan manajemen konten yang praktis.
-          </p>
-        </div>
-      </div>
+      {/* Bagian Kanan */}
+      <motion.div
+        className="flex-1 flex flex-col justify-center items-center p-6 bg-gray-100 relative"
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <button
+          className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
+          onClick={() => router.push("/")}
+        >
+          <XMarkIcon className="w-6 h-6" />
+        </button>
 
-      {/* Login Form Section */}
-      <div className="w-[466px] flex flex-col justify-center p-[40px] bg-white rounded-lg shadow-md">
-        <div className="text-center mb-[40px]">
-          <h2 className="text-2xl font-bold text-black">Welcome Back</h2>
-          <p className="mt-2 text-sm text-gray-600">
-            We’re so excited to see you again!
+        <motion.div
+          className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="text-2xl font-bold text-gray-900 text-center">
+            Login
+          </h2>
+          <p className="text-gray-600 text-center mt-2">
+            Masuk kembali ke akun Anda untuk melanjutkan pembelajaran
           </p>
-        </div>
-        <form className="flex flex-col gap-[30px]" onSubmit={handleSubmit}>
-          <div className="relative">
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              type="text"
-              id="email"
-              placeholder="Username / Email"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 placeholder-opacity-50 text-black"
-              disabled={loading} // Nonaktifkan input jika loading
-            />
+
+          <form className="mt-6 flex flex-col gap-4" onSubmit={handleSubmit}>
+            <div>
+              <label className="block text-gray-700">Email</label>
+              <input
+                type="text"
+                placeholder="Masukkan Email Anda"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700">Password</label>
+              <input
+                type="password"
+                placeholder="Masukkan Password Anda"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Login"}
+            </button>
+          </form>
+
+          {error && (
+            <p className="bg-red-500 text-white text-center p-2 mt-4 rounded-lg">
+              {error}
+            </p>
+          )}
+
+          <div className="text-center mt-4">
+            <span className="text-gray-600">Belum Memiliki Akun? </span>
+            <Link
+              href="/register"
+              className="text-blue-500 hover:text-blue-700"
+            >
+              Daftar
+            </Link>
           </div>
-          <div className="relative">
-            <input
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-              id="password"
-              placeholder="Password"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 placeholder-opacity-50 text-black"
-              disabled={loading} // Nonaktifkan input jika loading
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <a href="#" className="text-sm text-blue-500">
-              Lupa Password?
-            </a>
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled={loading} // Nonaktifkan tombol jika loading
-          >
-            {loading ? "Loading..." : "Sign In"}
-          </button>
-          <div className="text-center mt-4 ">
-            <a className="text-sm text-black pr-2">Butuh buat akun?</a>
-            <a href="/register" className="text-sm text-blue-500">
-              Daftar di sini
-            </a>
-          </div>
-        </form>
-        {/* Error Message */}
-        {error && (
-          <p className="bg-red-500 rounded-lg flex justify-center items-center p-2">
-            {error}
-          </p>
-        )}
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }
