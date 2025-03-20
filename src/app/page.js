@@ -88,7 +88,7 @@ export default function HomePage() {
           praktikkan konfigurasi, dan eksplorasi dunia jaringan dengan simulasi
           Cisco Packet Tracer. ⚡
         </p>
-        <button className="mt-6 px-8 py-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
+        <button className="mt-6 px-8 py-4 bg-blue-400 text-white rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
           <Link href="/login">Belajar Sekarang</Link>
         </button>
       </section>
@@ -96,7 +96,7 @@ export default function HomePage() {
       {/* Fitur Terbaik (Target Scroll) */}
       <section
         id="menuSection"
-        className="w-full min-h-screen py-20 bg-blue-500 flex flex-col justify-center items-center space-y-14"
+        className="w-full min-h-screen py-20 bg-blue-400 flex flex-col justify-center items-center space-y-14"
       >
         <div className="md:w-3/5 w-full text-center">
           <h1 className="font-bold md:text-5xl text-3xl text-white capitalize">
@@ -114,14 +114,15 @@ export default function HomePage() {
                 alt="icon"
                 width={128}
                 height={128}
-                className="w-32 h-32 object-contain"
+                className="w-45 h-45 object-contain"
               />
             </div>
             <h3 className="font-bold text-2xl text-blue-900 text-center min-h-[60px]">
               Materi
             </h3>
             <p className="text-center text-gray-700 min-h-[80px]">
-              Kemudahan Mengakses Materi Pembelajaran
+              Pahami konsep Administrasi Infrastruktur Jaringan dengan materi
+              berbasis teks, gambar, dan video.
             </p>
           </div>
 
@@ -129,11 +130,11 @@ export default function HomePage() {
           <div className="flex flex-col items-center space-y-4 bg-white rounded-lg p-6 shadow-lg max-w-[320px] mx-auto">
             <div className="p-6 flex justify-center items-center">
               <Image
-                src="/buku.png"
+                src="/simulasi.png"
                 alt="icon"
                 width={128}
                 height={128}
-                className="w-32 h-32 object-contain"
+                className="w-45 h-45 object-contain"
               />
             </div>
             <h3 className="font-bold text-2xl text-blue-900 text-center min-h-[60px]">
@@ -149,11 +150,11 @@ export default function HomePage() {
           <div className="flex flex-col items-center space-y-4 bg-white rounded-lg p-6 shadow-lg max-w-[320px] mx-auto">
             <div className="p-6 flex justify-center items-center">
               <Image
-                src="/buku.png"
+                src="/soal.png"
                 alt="icon"
                 width={128}
                 height={128}
-                className="w-32 h-32 object-contain"
+                className="w-45 h-45 object-contain"
               />
             </div>
             <h3 className="font-bold text-2xl text-blue-900 text-center min-h-[60px]">
@@ -181,8 +182,8 @@ export default function HomePage() {
             Nikmati fitur dimana guru dapat memberikan materi pembelajaran
             kepada siswanya yakni menggabungkan materi berupa teks dan video.
           </p>
-          <button className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-orange-600 transition duration-300">
-            Belajar Sekarang
+          <button className="mt-6 px-6 py-3 bg-blue-400 text-white rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
+            <Link href="/login">Belajar Sekarang</Link>
           </button>
         </div>
         <div className="flex justify-center">
@@ -196,6 +197,13 @@ export default function HomePage() {
           />
         </div>
       </section>
+
+      {/* Footer Section */}
+      <footer className="bg-blue-900 text-white text-center py-4">
+        <p className="text-sm text-gray-400">
+          © 2025 JAGO CONFIG. All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }

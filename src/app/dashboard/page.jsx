@@ -2,7 +2,7 @@
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
-import Card from "../components/Card";
+import Card from "../components/Cards";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {

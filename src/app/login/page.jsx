@@ -46,7 +46,7 @@ export default function Home() {
     <div className="flex min-h-screen">
       {/* Bagian Kiri */}
       <motion.div
-        className="flex-1 flex flex-col justify-center items-center bg-blue-600 p-10 text-white"
+        className="flex-1 flex flex-col justify-center items-center bg-blue-400 p-10 text-white"
         initial={{ opacity: 0, x: -100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
@@ -64,8 +64,9 @@ export default function Home() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
+        {/* Close Button */}
         <button
-          className="absolute top-5 right-5 text-gray-500 hover:text-gray-700"
+          className="absolute top-5 right-5 text-gray-400 hover:text-gray-700"
           onClick={() => router.push("/")}
         >
           <XMarkIcon className="w-6 h-6" />
@@ -111,7 +112,7 @@ export default function Home() {
 
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              className="w-full py-2 px-4 bg-blue-400 text-white rounded-lg hover:bg-blue-600"
               disabled={loading}
             >
               {loading ? "Loading..." : "Login"}
